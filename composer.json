@@ -1,0 +1,14 @@
+{
+    "name": "sebcbi1/cookie",
+    "autoload": {
+        "psr-4": {
+            "ResponseCookie\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.1.7"
+    },
+    "require": {
+        "psr/http-message": "1.0"
+    }
+}
