@@ -58,12 +58,24 @@ class Cookie
     public function __construct($name, $value = null, DateTime $expire = null, $path = null, $domain = null, $secure = null, $httpOnly = null)
     {
         $this->name = $name;
-        $this->value = $value;
-        $this->expire = $expire;
-        $this->path = $path;
-        $this->domain = $domain;
-        $this->secure = $secure;
-        $this->httpOnly = $httpOnly;
+        if (!empty($value)) {
+            $this->value = $value;
+        }
+        if (!empty($expire)) {
+            $this->expire = $expire;
+        }
+        if (!empty($path)) {
+            $this->path = $path;
+        }
+        if (!empty($domain)) {
+            $this->domain = $domain;
+        }
+        if (!is_null($secure)) {
+            $this->secure = $secure;
+        }
+        if (!is_null($httpOnly)) {
+            $this->httpOnly = $httpOnly;
+        }
     }
 
     /**
