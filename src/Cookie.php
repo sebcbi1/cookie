@@ -8,6 +8,8 @@
  */
 namespace ResponseCookie;
 
+use Datetime;
+
 class Cookie
 {
     /**
@@ -215,7 +217,7 @@ class Cookie
     public function setDeleted()
     {
         $this->setValue('deleted');
-        $this->setExpire((new \DateTime())->setTimestamp(0));
+        $this->setExpire((new DateTime())->setTimestamp(0));
     }
 
     public function __toString()
@@ -223,7 +225,7 @@ class Cookie
         $str = $this->name . '=' . $this->value . '; ';
 
         if (!empty($this->expire)) {
-            $str .= 'Expires=' . gmdate('D, d M Y H:i:s \G\M\T', $this->expire->getTimestamp()) . '; ';
+            $str .= 'Expires=' . $this->expire->format(Datetime::COOKIE) . '; ';
         }
 
         if (!empty($this->path)) {
