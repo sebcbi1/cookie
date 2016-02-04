@@ -223,7 +223,7 @@ class Cookie
         $str = $this->name . '=' . $this->value . '; ';
 
         if (!empty($this->expire)) {
-            $str .= 'Expires=' . gmdate('D, d M Y H:i:s \G\M\T', $this->expire) . '; ';
+            $str .= 'Expires=' . gmdate('D, d M Y H:i:s \G\M\T', $this->expire->getTimestamp()) . '; ';
         }
 
         if (!empty($this->path)) {
