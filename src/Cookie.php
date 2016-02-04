@@ -215,7 +215,7 @@ class Cookie
     public function setDeleted()
     {
         $this->setValue('deleted');
-        $this->setExpires((new \DateTime())->setTimestamp(0));
+        $this->setExpire((new \DateTime())->setTimestamp(0));
     }
 
     public function __toString()
