@@ -68,14 +68,14 @@ class SetCookie
             foreach ($pieces as $part) {
                 $cookieParts = explode('=', $part, 2);
                 $key = strtolower(trim($cookieParts[0]));
-                $value = isset($cookieParts[1])
+                $val = isset($cookieParts[1])
                     ? trim($cookieParts[1], " \n\r\t\0\x0B")
                     : true;
                 if (in_array($key, ['path', 'domain', 'secure', 'httponly'])) {
-                    $$key = $value;
+                    $$key = $val;
                 }
                 if ($key == 'expires') {
-                    $expires = new \DateTime($value);
+                    $expires = new \DateTime($val);
                 }
 
             }
