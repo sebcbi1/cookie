@@ -58,32 +58,50 @@ class SetCookie
     {
         $headers = $this->response->getHeader('set-cookie');
         foreach ($headers as $line) {
-            $name = $value = $expires =  $path = $domain = $secure = $httponly = null;
-            $pieces = array_filter(array_map('trim', explode(';', $line)));
-
-            list($name, $value) = explode('=', $pieces[0], 2);
-            $pieces = array_slice($pieces, 1);
-
-            // Add the cookie pieces into the parsed data array
-            foreach ($pieces as $part) {
-                $cookieParts = explode('=', $part, 2);
-                $key = strtolower(trim($cookieParts[0]));
-                $val = isset($cookieParts[1])
-                    ? trim($cookieParts[1], " \n\r\t\0\x0B")
-                    : true;
-                if (in_array($key, ['path', 'domain', 'secure', 'httponly'])) {
-                    $$key = $val;
-                }
-                if ($key == 'expires') {
-                    $expires = new \DateTime($val);
-                }
-
-            }
-            $this->cookies[$name] = new Cookie($name, $value, $expires, $path, $domain, $secure, $httponly);
+            $cookie = $this->decodeHeaderLine($line);
+            $this->cookies[$cookie->getName()] = $cookie;
         }
     }
 
+    private function decodeHeaderLine($line) : Cookie
+    {
+        $name = $value = $expires =  $path = $domain = $secure = $httponly = null;
+        $pieces = array_filter(array_map('trim', explode(';', $line)));
 
+        list($name, $value) = explode('=', $pieces[0], 2);
+        $pieces = array_slice($pieces, 1);
+
+        // Add the cookie pieces into the parsed data array
+        foreach ($pieces as $part) {
+            $cookieParts = explode('=', $part, 2);
+            $key = strtolower(trim($cookieParts[0]));
+            $val = isset($cookieParts[1])
+                ? trim($cookieParts[1], " \n\r\t\0\x0B")
+                : true;
+            if (in_array($key, ['path', 'domain', 'secure', 'httponly'])) {
+                $$key = $val;
+            }
+            if ($key == 'expires') {
+                $expires = new \DateTime($val);
+            }
+
+        }
+        return new Cookie($name, $value, $expires, $path, $domain, $secure, $httponly);
+    }
+
+    public function setSessionCookie()
+    {
+        if (empty($this->cookies[session_name()])) {
+            foreach(headers_list() as $header) {
+
+                if (strpos($header,session_name()) !== false) {
+                    $header = trim(str_ireplace('set-cookie:', '', $header));
+                    return $this->set($this->decodeHeaderLine($header));
+                }
+            }
+        }
+        return $this->response;
+    }
 
 
 }
