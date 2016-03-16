@@ -20,7 +20,7 @@ class SetCookie
     /**
      * @var ResponseInterface
      */
-    private $response ;
+    private $response;
 
     /**
      * SetCookie constructor.
@@ -53,31 +53,30 @@ class SetCookie
         return $this->response->withHeader('Set-Cookie', array_map('strval', $this->cookies));
     }
 
-
     private function decodeCookiesFromHeaders()
     {
         $headers = $this->response->getHeader('set-cookie');
         foreach ($headers as $line) {
-            $cookie = $this->decodeHeaderLine($line);
+            $cookie                            = $this->decodeHeaderLine($line);
             $this->cookies[$cookie->getName()] = $cookie;
         }
     }
 
-    private function decodeHeaderLine($line) : Cookie
+    private function decodeHeaderLine($line): Cookie
     {
-        $name = $value = $expires =  $path = $domain = $secure = $httponly = null;
+        $name   = $value   = $expires   = $path   = $domain   = $secure   = $httponly   = null;
         $pieces = array_filter(array_map('trim', explode(';', $line)));
 
         list($name, $value) = explode('=', $pieces[0], 2);
-        $pieces = array_slice($pieces, 1);
+        $pieces             = array_slice($pieces, 1);
 
         // Add the cookie pieces into the parsed data array
         foreach ($pieces as $part) {
             $cookieParts = explode('=', $part, 2);
-            $key = strtolower(trim($cookieParts[0]));
-            $val = isset($cookieParts[1])
-                ? trim($cookieParts[1], " \n\r\t\0\x0B")
-                : true;
+            $key         = strtolower(trim($cookieParts[0]));
+            $val         = isset($cookieParts[1])
+            ? trim($cookieParts[1], " \n\r\t\0\x0B")
+            : true;
             if (in_array($key, ['path', 'domain', 'secure', 'httponly'])) {
                 $$key = $val;
             }
@@ -92,9 +91,9 @@ class SetCookie
     public function setSessionCookie()
     {
         if (empty($this->cookies[session_name()])) {
-            foreach(headers_list() as $header) {
+            foreach (headers_list() as $header) {
 
-                if (strpos($header,session_name()) !== false) {
+                if (strpos($header, session_name()) !== false) {
                     $header = trim(str_ireplace('set-cookie:', '', $header));
                     return $this->set($this->decodeHeaderLine($header));
                 }
@@ -102,6 +101,5 @@ class SetCookie
         }
         return $this->response;
     }
-
 
 }

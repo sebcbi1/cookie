@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Project: auth-demo
- * User: sebcbi1
- * Date: 02/02/16
- * Time: 11:38
- */
 namespace ResponseCookie;
 
 use Datetime;
@@ -25,7 +19,7 @@ class Cookie
     /**
      * @var DateTime
      */
-    protected $expire ;
+    protected $expire;
 
     /**
      * @var string
@@ -213,10 +207,9 @@ class Cookie
         return $this;
     }
 
-
     public function setDeleted()
     {
-        $this->setValue('deleted');
+        $this->setValue(null);
         $this->setExpire((new DateTime())->setTimestamp(0));
     }
 
@@ -229,11 +222,11 @@ class Cookie
         }
 
         if (!empty($this->path)) {
-            $str .= 'Path=' . $this->path. '; ';
+            $str .= 'Path=' . $this->path . '; ';
         }
 
         if (!empty($this->domain)) {
-            $str .= 'Domain=' . $this->domain. '; ';
+            $str .= 'Domain=' . $this->domain . '; ';
         }
 
         if (!empty($this->secure)) {
@@ -244,7 +237,7 @@ class Cookie
             $str .= 'HttpOnly; ';
         }
 
-        return rtrim($str,'; ');
+        return rtrim($str, '; ');
     }
 
 }
