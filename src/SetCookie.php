@@ -47,7 +47,7 @@ class SetCookie
             $this->cookies[$name] = new $cookieClassName($name);
         }
 
-        $this->cookies[$name]->setValue('deleted');
+        $this->cookies[$name]->setValue(null);
         $this->cookies[$name]->setExpire((new \DateTime())->setTimestamp(0));
 
         return $this->response->withHeader('Set-Cookie', array_map('strval', $this->cookies));
