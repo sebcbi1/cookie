@@ -62,7 +62,7 @@ class SetCookie
         }
     }
 
-    private function decodeHeaderLine($line): Cookie
+    private function decodeHeaderLine($line)
     {
         $name   = $value   = $expires   = $path   = $domain   = $secure   = $httponly   = null;
         $pieces = array_filter(array_map('trim', explode(';', $line)));
