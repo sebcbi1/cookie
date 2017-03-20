@@ -101,5 +101,16 @@ class SetCookie
         }
         return $this->response;
     }
+    
+    public function setCookies()
+    {
+        foreach (headers_list() as $header) {
+            if (strpos(strtolower($header), 'set-cookie:') !== false) {
+                $header = trim(str_ireplace('set-cookie:', '', $header));
+                $this->response = $this->set($this->decodeHeaderLine($header));
+            }
+        }
+        return $this->response;
+    }
 
 }
