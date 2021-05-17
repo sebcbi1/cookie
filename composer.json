@@ -9,6 +9,6 @@
         "phpunit/phpunit": "5.1.7"
     },
     "require": {
-        "psr/http-message": "1.0"
+        "psr/http-message": "1.*"
     }
 }
